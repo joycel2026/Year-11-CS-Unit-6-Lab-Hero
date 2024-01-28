@@ -35,7 +35,7 @@ public class Hero {
         senzuBean();
         opponent.senzuBean();
         fightUntilTheDeathHelper(opponent);
-        return getName()+": "+Integer.toString(getHitPoints())+opponent+": "+Integer.toString(opponent.getHitPoints());
+        return getName()+": "+Integer.toString(getHitPoints())+opponent.getName()+": "+Integer.toString(opponent.getHitPoints());
     }
     private int[] nFightsToTheDeathHelper(Hero opponent, int n){
         int[] fights = new int[2];
@@ -72,6 +72,11 @@ public class Hero {
         while ((getHitPoints()!=0)||(opponent.getHitPoints()!=0)){
             attack(opponent);
             System.out.println(getName()+": "+Integer.toString(getHitPoints())+opponent+": "+Integer.toString(opponent.getHitPoints()));
+        }
+        if (getHitPoints()>opponent.getHitPoints()){
+            System.out.println(getName()+" wins!");
+        } else if (getHitPoints()<opponent.getHitPoints()){
+            System.out.println(opponent+" wins!");
         }
     }
 }
