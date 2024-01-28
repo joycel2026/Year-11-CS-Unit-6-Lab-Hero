@@ -18,16 +18,16 @@ public class Hero {
         double random = Math.random();
         double result = random * 0.99;
         if (result<0.5){
-            this.hitPoints = opponent.getHitPoints()-10;
+            opponent.hitPoints -=10;
         } if (result>=0.5){
-            this.hitPoints = getHitPoints()-10;
+            hitPoints-= 10;
         }
     }
     public void senzuBean(){
-        this.hitPoints = 100;
+        hitPoints = 100;
     }
     private void fightUntilTheDeathHelper(Hero opponent){
-        while ((getHitPoints()!=0)||(opponent.getHitPoints()!=0)){
+        while (hitPoints!=0&&opponent.hitPoints!=0){
             attack(opponent);
         }
     }
@@ -35,31 +35,26 @@ public class Hero {
         senzuBean();
         opponent.senzuBean();
         fightUntilTheDeathHelper(opponent);
-        return getName()+": "+Integer.toString(getHitPoints())+opponent.getName()+": "+Integer.toString(opponent.getHitPoints());
+        return this.name+": "+Integer.toString(this.hitPoints)+" "+opponent.name+": "+Integer.toString(opponent.hitPoints);
     }
     private int[] nFightsToTheDeathHelper(Hero opponent, int n){
-        int[] fights = new int[2];
-        if (n>0){
-            while ((getHitPoints()!=0)||(opponent.getHitPoints()!=0)){
-                double random = Math.random();
-                double result = random * 0.99;
-                if (result<0.5){
-                    this.hitPoints = opponent.getHitPoints()-10;
-                    fights[0] = fights[0]+1;
-                } if (result>=0.5){
-                    this.hitPoints = getHitPoints()-10;
-                    fights[1] = fights[1]+1;
-                }
-                n-=1;
-            } senzuBean();
+        int[] results = new int[2];
+        for (int i = 0; i<n; i++){
+            senzuBean();
             opponent.senzuBean();
+            fightUntilTheDeathHelper(opponent);
+            if (opponent.hitPoints<=0){
+                results[0]++;
+            } else{
+                results[1]++;
+            }
         }
-        return fights;
+        return results;
     }
     public String nFightsToTheDeath(Hero opponent, int n){
-        int[] fights = nFightsToTheDeathHelper(opponent, n);
-        int heroWins = fights[0];
-        int opponentWins = fights[1];
+        int[] results = nFightsToTheDeathHelper(opponent, n);
+        int heroWins = results[0];
+        int opponentWins = results[1];
         if (heroWins==opponentWins){
             return getName()+": "+Integer.toString(heroWins)+" wins\n"+opponent+": "+Integer.toString(opponentWins)+" wins\nOMG! It was actually a draw!";
         } if (heroWins>opponentWins){
@@ -69,7 +64,7 @@ public class Hero {
     public void dramaticFightToTheDeath(Hero opponent){
         senzuBean();
         opponent.senzuBean();
-        while ((getHitPoints()!=0)||(opponent.getHitPoints()!=0)){
+        while ((getHitPoints()!=0)&&(opponent.getHitPoints()!=0)){
             attack(opponent);
             System.out.println(getName()+": "+Integer.toString(getHitPoints())+opponent+": "+Integer.toString(opponent.getHitPoints()));
         }
